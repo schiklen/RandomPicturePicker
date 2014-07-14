@@ -1,0 +1,22 @@
+put in rppGUI:
+
+        else:
+            choices = ["Yes", "No", "Ignore"]
+            choiceBtns = []
+            self.annoField = ButtonGroup()
+            for c in choices:
+                Btn = JRadioButton(c)
+                self.annoField.add(Btn)
+                choiceBtns.append(Btn)
+          
+            h = annoPLayout.createParallelGroup()
+            for b in choiceBtns:
+                h.addComponent(b)
+            annoPLayout.setHorizontalGroup(h)
+            
+            v = annoPLayout.createSequentialGroup()
+            for b in choiceBtns:
+                v.addComponent(b)
+            annoPLayout.setVerticalGroup(v)
+            
+            
