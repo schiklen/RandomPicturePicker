@@ -85,7 +85,7 @@ class initDialog(JDialog): # JFrame
         self.rBGroup.add(intRButton)
         self.rBGroup.add(nRButton)
         self.rBGroup.add(listRButton)
-        
+        #TODO: list editor! -> GO terms
         
         #buttons
         cPathButton = JButton("Browse...", actionPerformed=self.browseC) # lambda on fieldvalue

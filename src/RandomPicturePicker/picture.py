@@ -5,13 +5,12 @@ Created on Jun 6, 2014
 '''
 from os import path
 from ij.io import Opener
+#from ij import ImagePlus
 
 class picture(object):
     '''
     classdocs
     '''
-    
-
 
     def __init__(self, folderPath, fileName, group): # sting path folderPath, fileName, boolean shown
         '''
@@ -27,6 +26,9 @@ class picture(object):
     def getImp(self):
         imp = Opener().openImage(self.fullPath)
         return imp
+    
+    def getImagePath(self):
+        return self.fullPath
     
     def annotate(self, annotation):
         self.annotation = annotation
