@@ -8,6 +8,7 @@ from os import listdir
 import random
 from picture import picture
 from rppGui import Gui
+#from ij import ImagePlus
 
 class picturePicker(object):
     '''
@@ -55,6 +56,7 @@ class picturePicker(object):
             #self.pictureList.remove(pic)
     
     def nextPicture(self, event):
+        print "pl length" + str(len(self.pictureList))
         if len(self.pictureList) > 0:
             rImage = random.choice(self.pictureList)
             self.imp = rImage.getImp()
@@ -71,5 +73,4 @@ p = picturePicker()
 p.showInitDialog()
 
 p.createPictureList()
-print p.getAnnotationType()
 p.startGUI()

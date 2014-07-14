@@ -32,14 +32,20 @@ class Gui(JFrame):
         annoPLayout.setAutoCreateGaps(True)        
 
         # dynamic creation of annotation panel
-        print "Anno Type" + str(self.pP.getAnnotationType())
-        if self.pP.annotationType == "Integer":
-            print "Integer"
+        # yesNoIgnore, int, number, list
+        if self.pP.getAnnotationType() == "int":
+            self.annoField = JTextField("", 4)
+            annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
+            annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
+        elif self.pP.getAnnotationType() == "number":
             self.annoField = JTextField("", 16)
             annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
             annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
-        if self.pP.annotationType == "Yes / No / Ignore":
-            choices = ["Yes", "No", "Ignore"]
+        elif self.pP.getAnnotationType() == "yesNoIgnore" or "list":
+            if self.pP.getAnnotationType() == "yesNoIgnore":
+                choices = ["Yes", "No", "Ignore"]
+            else:
+                choices = ["PUT","LIST","HERE!"]
             choiceBtns = []
             self.annoField = ButtonGroup()
             for c in choices:

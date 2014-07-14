@@ -73,9 +73,13 @@ class initDialog(JDialog): # JFrame
         
         #radiobuttons
         yesNoRButton = JRadioButton("Yes / No / Ignore")
+        yesNoRButton.setActionCommand("yesNoIgnore")
         intRButton = JRadioButton("Integer")
+        intRButton.setActionCommand("int")
         nRButton = JRadioButton("Number")
+        nRButton.setActionCommand("number")
         listRButton = JRadioButton("From List")
+        listRButton.setActionCommand("list")
         self.rBGroup = ButtonGroup()
         self.rBGroup.add(yesNoRButton)
         self.rBGroup.add(intRButton)
@@ -191,10 +195,7 @@ class initDialog(JDialog): # JFrame
     def okayEvent(self, event):
         inputDict = {self.tPathField.getText():"treatment", self.cPathField.getText():"control"} # this is for later extension
         self.picPicker.setInputPathDict(inputDict)
-        
         self.picPicker.setOutputPath(self.exPathField.getText())
-        print "A " + str(self.rBGroup.getSelection().getActionCommand())
-        print "B " + str(self.rBGroup.getSelection())
         self.picPicker.setAnnotationType(self.rBGroup.getSelection().getActionCommand())
         
         self.dispose()
