@@ -3,7 +3,7 @@ Created on Jun 3, 2014
 
 @author: schiklen
 '''
-from javax.swing import JButton, JLabel, JFrame, JDialog, GroupLayout, JTextField, JPanel, JRadioButton, ButtonGroup, BorderFactory, SwingConstants
+from javax.swing import JButton, JLabel, JFrame, JDialog, GroupLayout, JTextField, JPanel, JRadioButton, ButtonGroup, JList, DefaultListModel,  BorderFactory, SwingConstants
 from java.awt.Dialog import ModalityType
 from os import path
 from datetime import date
@@ -85,7 +85,22 @@ class initDialog(JDialog): # JFrame
         self.rBGroup.add(intRButton)
         self.rBGroup.add(nRButton)
         self.rBGroup.add(listRButton)
+        
         #TODO: list editor! -> GO terms
+        #JList for custom list
+        self.listTextField = JTextField("", 16)
+        self.aListModel = DefaultListModel()
+        aList = JList(self.aListModel)
+        #buttons for JList
+        listAddButton = JButton("Add", actionPerformed=self.addToList)
+        listRemoveButton = JButton("Remove")#, actionPerformed=self.removeFromList)
+        
+        
+        '''            
+        def removeFromList(self, event):
+            self.aListModel.remove()
+        
+        '''
         
         #buttons
         cPathButton = JButton("Browse...", actionPerformed=self.browseC) # lambda on fieldvalue
@@ -138,12 +153,14 @@ class initDialog(JDialog): # JFrame
                                     .addComponent(yesNoRButton)
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
-                                    .addComponent(listRButton))
+                                    .addComponent(listRButton)
+                                    .addComponent(aList))
         anLayout.setVerticalGroup(anLayout.createSequentialGroup()
                                     .addComponent(yesNoRButton)
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
-                                    .addComponent(listRButton))
+                                    .addComponent(listRButton)
+                                    .addComponent(aList))
         
         
         '''Export panel layout'''
@@ -188,7 +205,10 @@ class initDialog(JDialog): # JFrame
         self.exPathField.text = DirectoryChooser("Select Export Folder").getDirectory()
         self.picPicker.setOutputPath(self.exPathField.text)
 
-            
+    def addToList(self, event):
+        self.aListModel.addElement(self.listTextField.text)
+
+
     def cancel(self, event):
         exit(0)
 
