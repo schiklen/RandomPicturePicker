@@ -8,6 +8,7 @@ from java.awt.Dialog import ModalityType
 from os import path
 from datetime import date
 from ij.io import DirectoryChooser
+from listDialog import listDialog
 
 class initDialog(JDialog): # JFrame
     
@@ -87,20 +88,7 @@ class initDialog(JDialog): # JFrame
         self.rBGroup.add(listRButton)
         
         #TODO: list editor! -> GO terms
-        #JList for custom list
-        self.listTextField = JTextField("", 16)
-        self.aListModel = DefaultListModel()
-        aList = JList(self.aListModel)
-        #buttons for JList
-        listAddButton = JButton("Add", actionPerformed=self.addToList)
-        listRemoveButton = JButton("Remove")#, actionPerformed=self.removeFromList)
-        
-        
-        '''            
-        def removeFromList(self, event):
-            self.aListModel.remove()
-        
-        '''
+        customListButton = JButton("Custom List...", actionPerformed=self.makeCustomList)
         
         #buttons
         cPathButton = JButton("Browse...", actionPerformed=self.browseC) # lambda on fieldvalue
@@ -154,13 +142,13 @@ class initDialog(JDialog): # JFrame
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
                                     .addComponent(listRButton)
-                                    .addComponent(aList))
+                                    .addComponent(customListButton))
         anLayout.setVerticalGroup(anLayout.createSequentialGroup()
                                     .addComponent(yesNoRButton)
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
                                     .addComponent(listRButton)
-                                    .addComponent(aList))
+                                    .addComponent(customListButton))
         
         
         '''Export panel layout'''
@@ -205,9 +193,8 @@ class initDialog(JDialog): # JFrame
         self.exPathField.text = DirectoryChooser("Select Export Folder").getDirectory()
         self.picPicker.setOutputPath(self.exPathField.text)
 
-    def addToList(self, event):
-        self.aListModel.addElement(self.listTextField.text)
-
+    def makeCustomList(self, event):
+        listDialog(self.picPicker)
 
     def cancel(self, event):
         exit(0)

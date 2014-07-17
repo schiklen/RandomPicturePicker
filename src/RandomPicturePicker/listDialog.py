@@ -4,18 +4,20 @@ Created on Jul 16, 2014
 @author: schiklen
 '''
 from javax.swing import JDialog, JFrame, JList, JScrollPane, JTextField, DefaultListModel, ListSelectionModel, JButton, JPanel, GroupLayout
-
+from java.awt import Dimension
 class listDialog(JDialog):
     '''
     classdocs
     '''
 
 
-    def __init__(self):
+    def __init__(self, pP):
         '''
         Constructor
         '''
         self.list = []
+        self.pP = pP
+        self.setTitle("Create annotation list")
         
         #Components
         self.textField = JTextField("",16)
@@ -26,7 +28,7 @@ class listDialog(JDialog):
         self.listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
         #self.listBox.addListSelectionListener(self)
         self.listBox.setVisibleRowCount(5)
-        listScrollPane = JScrollPane(self.listBox)
+        listScroller = JScrollPane(self.listBox)
         
         addButton = JButton("Add", actionPerformed = self.addToList)
         rmButton = JButton("Remove", actionPerformed = self.rmFromList)
@@ -38,7 +40,7 @@ class listDialog(JDialog):
         
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                     .addComponent(self.textField)
-                                    .addComponent(self.listBox)
+                                    .addComponent(listScroller)
                                     .addGroup(layout.createSequentialGroup()
                                               .addComponent(addButton)
                                               .addComponent(rmButton)
@@ -47,7 +49,7 @@ class listDialog(JDialog):
                                     )
         layout.setVerticalGroup(layout.createSequentialGroup()
                                 .addComponent(self.textField)
-                                .addComponent(self.listBox)
+                                .addComponent(listScroller)
                                 .addGroup(layout.createParallelGroup()
                                           .addComponent(addButton)
                                           .addComponent(rmButton)
@@ -58,16 +60,19 @@ class listDialog(JDialog):
         
         
     def addToList(self, event):
-        print "add"
+        if self.textField.getText != "":
+            self.listModel.addElement(self.textField.getText())
+        self.textField.setText("")
         
     def rmFromList(self, event):
-        print "Remove"
-        #self.listModel.removeElement()
+        self.listModel.remove(self.listBox.getSelectedIndex())
     
     def ok(self, event):
         print "ok"
+        print list(self.listModel.toArray())
+        self.pP.setAnnotationType(list(self.listModel.toArray()))
         
         self.dispose()
         
 #--- main for test
-listDialog()
+#listDialog()
