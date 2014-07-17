@@ -4,7 +4,7 @@ Created on Jun 8, 2014
 @author: schiklen
 '''
 from javax.swing import JButton, JLabel, JFrame, GroupLayout, JTextField, JPanel, JRadioButton, JProgressBar, ButtonGroup, BorderFactory, SwingConstants
-from java.awt import GridLayout # abstract window toolkit
+from java.awt import GridLayout, Dialog # abstract window toolkit
 from os import path
 from datetime import date
 

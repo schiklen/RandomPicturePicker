@@ -3,30 +3,24 @@ Created on Jul 16, 2014
 
 @author: schiklen
 '''
-from javax.swing import JDialog, JFrame, JList, JScrollPane, JTextField, DefaultListModel, ListSelectionModel, JButton, JPanel, GroupLayout
-from java.awt import Dimension
+from javax.swing import JDialog, JList, JScrollPane, JTextField, DefaultListModel, ListSelectionModel, JButton, GroupLayout
+
 class listDialog(JDialog):
     '''
     classdocs
     '''
 
-
-    def __init__(self, pP):
-        '''
-        Constructor
-        '''
-        self.list = []
-        self.pP = pP
+    #Constructor
+    def startUI(self):
         self.setTitle("Create annotation list")
-        
         #Components
-        self.textField = JTextField("",16)
+        self.textField = JTextField("", 16)
+        self.annotationType = []
 
         self.listModel = DefaultListModel()
         self.listModel.addElement("obj")
         self.listBox = JList(self.listModel)
         self.listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-        #self.listBox.addListSelectionListener(self)
         self.listBox.setVisibleRowCount(5)
         listScroller = JScrollPane(self.listBox)
         
@@ -37,7 +31,6 @@ class listDialog(JDialog):
         #layout
         layout = GroupLayout(self.getContentPane())
         self.getContentPane().setLayout(layout)
-        
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                     .addComponent(self.textField)
                                     .addComponent(listScroller)
@@ -54,10 +47,11 @@ class listDialog(JDialog):
                                           .addComponent(addButton)
                                           .addComponent(rmButton)
                                           .addComponent(okButton)
-                                         ))
+                                         )
+                                )
+        
         self.pack()
         self.setVisible(True)
-        
         
     def addToList(self, event):
         if self.textField.getText != "":
@@ -67,12 +61,15 @@ class listDialog(JDialog):
     def rmFromList(self, event):
         self.listModel.remove(self.listBox.getSelectedIndex())
     
+    def getAnnotationType(self):
+        return self.annotationType
+    
     def ok(self, event):
-        print "ok"
-        print list(self.listModel.toArray())
-        self.pP.setAnnotationType(list(self.listModel.toArray()))
-        
+        print "Annotation list", list(self.listModel.toArray())
+        self.annotationType = list(self.listModel.toArray())
+        self.getParent().getPicPicker().setAnnotationType(list(self.listModel.toArray()))
         self.dispose()
+
         
 #--- main for test
 #listDialog()

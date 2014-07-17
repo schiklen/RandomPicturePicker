@@ -5,7 +5,6 @@ Created on Jun 6, 2014
 '''
 from os import path
 from ij.io import Opener
-#from ij import ImagePlus
 
 class picture(object):
     '''

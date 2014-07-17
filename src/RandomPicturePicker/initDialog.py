@@ -21,6 +21,7 @@ class initDialog(JDialog): # JFrame
         self.picPicker = pP
     
         super(initDialog, self).__init__()
+        self.setModal(True)
         self.initUI()
 
 
@@ -72,7 +73,7 @@ class initDialog(JDialog): # JFrame
         self.tPathField = JTextField("", 16)
         self.exPathField = JTextField("", 16)
         
-        #radiobuttons
+        #Radiobuttons
         yesNoRButton = JRadioButton("Yes / No / Ignore")
         yesNoRButton.setActionCommand("yesNoIgnore")
         intRButton = JRadioButton("Integer")
@@ -87,7 +88,6 @@ class initDialog(JDialog): # JFrame
         self.rBGroup.add(nRButton)
         self.rBGroup.add(listRButton)
         
-        #TODO: list editor! -> GO terms
         customListButton = JButton("Custom List...", actionPerformed=self.makeCustomList)
         
         #buttons
@@ -174,14 +174,12 @@ class initDialog(JDialog): # JFrame
 
         self.setTitle("Random Picture Picker")
 
-        #self.setSize(200, 150)
         self.pack()
         self.setLocationRelativeTo(None)
         self.setVisible(True)
 
     def addDirToList(self, p):
         self.dirPathList.append(p)
-        #maybe add to listmodel
 
     def browseT(self, event):
         self.tPathField.text = DirectoryChooser("Select Treatment Folder").getDirectory()
@@ -194,8 +192,9 @@ class initDialog(JDialog): # JFrame
         self.picPicker.setOutputPath(self.exPathField.text)
 
     def makeCustomList(self, event):
-        listDialog(self.picPicker)
-
+        ld = listDialog(self)
+        ld.startUI()
+        
     def cancel(self, event):
         exit(0)
 
@@ -206,3 +205,6 @@ class initDialog(JDialog): # JFrame
         self.picPicker.setAnnotationType(self.rBGroup.getSelection().getActionCommand())
         
         self.dispose()
+        
+    def getPicPicker(self):
+        return self.picPicker
