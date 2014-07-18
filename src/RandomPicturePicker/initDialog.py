@@ -21,7 +21,7 @@ class initDialog(JDialog): # JFrame
         self.picPicker = pP
     
         super(initDialog, self).__init__()
-        self.setModal(True)
+        
         self.initUI()
 
 
@@ -29,36 +29,25 @@ class initDialog(JDialog): # JFrame
         
         inputPanel = JPanel()
         inputPanel.setBorder(BorderFactory.createTitledBorder("Where are your control and treament images?"))
-        inputLayout = GroupLayout(inputPanel)
+        inputLayout = GroupLayout(inputPanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         inputPanel.setLayout(inputLayout)
-        inputLayout.setAutoCreateContainerGaps(True)
-        inputLayout.setAutoCreateGaps(True)
         
         annotatePanel = JPanel()
         annotatePanel.setBorder(BorderFactory.createTitledBorder("How do you want to annotate your data?"))
-        anLayout = GroupLayout(annotatePanel)
+        anLayout = GroupLayout(annotatePanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         annotatePanel.setLayout(anLayout)
-        anLayout.setAutoCreateContainerGaps(True)
-        anLayout.setAutoCreateGaps(True)
         
         exportPanel = JPanel()
         exportPanel.setBorder(BorderFactory.createTitledBorder("Where do you want to export your data"))
-        exportLayout = GroupLayout(exportPanel)
+        exportLayout = GroupLayout(exportPanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         exportPanel.setLayout(exportLayout)
-        exportLayout.setAutoCreateContainerGaps(True)
-        exportLayout.setAutoCreateGaps(True)
         
         btnPanel = JPanel()
-        btnLayout = GroupLayout(btnPanel)
+        btnLayout = GroupLayout(btnPanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         btnPanel.setLayout(btnLayout)
-        btnLayout.setAutoCreateContainerGaps(True)
-        btnLayout.setAutoCreateGaps(True)
         
-        
-        layout = GroupLayout(self.getContentPane())
+        layout = GroupLayout(self.getContentPane(), autoCreateContainerGaps=True, autoCreateGaps=True)
         self.getContentPane().setLayout(layout)
-        layout.setAutoCreateGaps(True)
-        layout.setAutoCreateContainerGaps(True)
 
         self.setModalityType(ModalityType.APPLICATION_MODAL)
         self.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE)# JFrame.EXIT_ON_CLOSE)
@@ -74,27 +63,24 @@ class initDialog(JDialog): # JFrame
         self.exPathField = JTextField("", 16)
         
         #Radiobuttons
-        yesNoRButton = JRadioButton("Yes / No / Ignore")
-        yesNoRButton.setActionCommand("yesNoIgnore")
-        intRButton = JRadioButton("Integer")
-        intRButton.setActionCommand("int")
-        nRButton = JRadioButton("Number")
-        nRButton.setActionCommand("number")
-        listRButton = JRadioButton("From List")
-        listRButton.setActionCommand("list")
+        yesNoRButton = JRadioButton("Yes / No / Ignore", actionCommand="yesNoIgnore", actionPerformed=self.disableCLButton)
+        intRButton = JRadioButton("Integer", actionCommand="int", actionPerformed=self.disableCLButton)
+        nRButton = JRadioButton("Number", actionCommand="number", actionPerformed=self.disableCLButton)
+        listRButton = JRadioButton("From List...", actionCommand="list", actionPerformed=self.enableCLButton)
+
         self.rBGroup = ButtonGroup()
         self.rBGroup.add(yesNoRButton)
         self.rBGroup.add(intRButton)
         self.rBGroup.add(nRButton)
         self.rBGroup.add(listRButton)
         
-        customListButton = JButton("Custom List...", actionPerformed=self.makeCustomList)
+        #self.customListButton = JButton("Custom List...", actionPerformed=self.makeCustomList, enabled=0)
         
         #buttons
         cPathButton = JButton("Browse...", actionPerformed=self.browseC) # lambda on fieldvalue
         tPathButton = JButton("Browse...", actionPerformed=self.browseT) # lambda on fieldvalue
         exPathButton = JButton("Browse...", actionPerformed=self.browseE)
-        OKButton = JButton("OK",actionPerformed=self.okayEvent)
+        OKButton = JButton("OK", actionPerformed=self.okayEvent)
         CancelButton = JButton("Cancel", actionPerformed=self.cancel)
         
         '''General ContentPane Layout'''
@@ -142,13 +128,15 @@ class initDialog(JDialog): # JFrame
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
                                     .addComponent(listRButton)
-                                    .addComponent(customListButton))
+                                    #.addComponent(self.customListButton)
+                                    )
         anLayout.setVerticalGroup(anLayout.createSequentialGroup()
                                     .addComponent(yesNoRButton)
                                     .addComponent(intRButton)
                                     .addComponent(nRButton)
                                     .addComponent(listRButton)
-                                    .addComponent(customListButton))
+                                    #.addComponent(self.customListButton)
+                                    )
         
         
         '''Export panel layout'''
@@ -191,7 +179,7 @@ class initDialog(JDialog): # JFrame
         self.exPathField.text = DirectoryChooser("Select Export Folder").getDirectory()
         self.picPicker.setOutputPath(self.exPathField.text)
 
-    def makeCustomList(self, event):
+    def makeCustomList(self):
         ld = listDialog(self)
         ld.startUI()
         
@@ -202,9 +190,15 @@ class initDialog(JDialog): # JFrame
         inputDict = {self.tPathField.getText():"treatment", self.cPathField.getText():"control"} # this is for later extension
         self.picPicker.setInputPathDict(inputDict)
         self.picPicker.setOutputPath(self.exPathField.getText())
-        self.picPicker.setAnnotationType(self.rBGroup.getSelection().getActionCommand())
-        
         self.dispose()
         
     def getPicPicker(self):
         return self.picPicker
+
+    def disableCLButton(self, event):
+        self.picPicker.setAnnotationType(self.rBGroup.getSelection().getActionCommand())
+        #self.customListButton.setEnabled(False)
+    
+    def enableCLButton(self,event):
+        self.makeCustomList()
+        #self.customListButton.setEnabled(True)

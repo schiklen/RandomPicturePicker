@@ -42,10 +42,8 @@ class Gui(JFrame):
             annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
             annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
         elif self.pP.getAnnotationType() == "yesNoIgnore" or "list":
-            if self.pP.getAnnotationType() == "yesNoIgnore":
-                choices = ["Yes", "No", "Ignore"]
-            else:
-                choices = ["PUT","LIST","HERE!"]
+            choices = pP.getAnnotationType()
+            print "choices", choices
             choiceBtns = []
             self.annoField = ButtonGroup()
             for c in choices:
@@ -66,10 +64,8 @@ class Gui(JFrame):
 
         # Control Panel
         ctrlPanel = JPanel()
-        ctrlPLayout = GroupLayout(ctrlPanel)
+        ctrlPLayout = GroupLayout(ctrlPanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         ctrlPanel.setLayout(ctrlPLayout)
-        ctrlPLayout.setAutoCreateContainerGaps(True)
-        ctrlPLayout.setAutoCreateGaps(True)
         
         nextImgButton = JButton("Next >", actionPerformed=self.pP.nextPicture)
         prevImgButton = JButton("< Prev", actionPerformed=self.pP.prevPicture)

@@ -39,6 +39,7 @@ class picturePicker(object):
         self.outputPath = outputPath
     
     def setAnnotationType(self, annotationType):
+        print "set anno type to", annotationType
         self.annotationType = annotationType
         
     def getAnnotationType(self):

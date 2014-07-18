@@ -4,7 +4,8 @@ Created on Jul 16, 2014
 @author: schiklen
 '''
 from javax.swing import JDialog, JList, JScrollPane, JTextField, DefaultListModel, ListSelectionModel, JButton, GroupLayout
-
+from java.awt.Dialog import ModalityType
+from java.awt import Dialog
 class listDialog(JDialog):
     '''
     classdocs
@@ -16,9 +17,12 @@ class listDialog(JDialog):
         #Components
         self.textField = JTextField("", 16)
         self.annotationType = []
+        self.setModalityType(Dialog.ModalityType.DOCUMENT_MODAL)
 
         self.listModel = DefaultListModel()
-        self.listModel.addElement("obj")
+        self.listModel.addElement("Nucleus")
+        self.listModel.addElement("Cytoplasm")
+        self.listModel.addElement("Plasma Membrane")
         self.listBox = JList(self.listModel)
         self.listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
         self.listBox.setVisibleRowCount(5)
@@ -51,6 +55,7 @@ class listDialog(JDialog):
                                 )
         
         self.pack()
+        self.setLocationRelativeTo(self.getParent())
         self.setVisible(True)
         
     def addToList(self, event):
