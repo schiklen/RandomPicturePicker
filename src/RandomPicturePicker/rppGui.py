@@ -33,11 +33,12 @@ class Gui(JFrame):
 
         # dynamic creation of annotation panel
         # yesNoIgnore, int, number, list
+        print self.pP.getAnnotationType()
         if self.pP.getAnnotationType() == "int":
             self.annoField = JTextField("", 4)
             annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
             annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
-        elif self.pP.getAnnotationType() == "number":
+        elif self.pP.getAnnotationType() == "float":
             self.annoField = JTextField("", 16)
             annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
             annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
@@ -47,7 +48,7 @@ class Gui(JFrame):
             choiceBtns = []
             self.annoField = ButtonGroup()
             for c in choices:
-                Btn = JRadioButton(c)
+                Btn = JRadioButton(c, actionCommand=c)
                 self.annoField.add(Btn)
                 choiceBtns.append(Btn)
           
@@ -67,7 +68,7 @@ class Gui(JFrame):
         ctrlPLayout = GroupLayout(ctrlPanel, autoCreateContainerGaps=True, autoCreateGaps=True)
         ctrlPanel.setLayout(ctrlPLayout)
         
-        nextImgButton = JButton("Next >", actionPerformed=self.pP.nextPicture)
+        nextImgButton = JButton("Next >", actionPerformed=self.nextPicture)
         prevImgButton = JButton("< Prev", actionPerformed=self.pP.prevPicture)
         quitButton = JButton("Quit", actionPerformed=self.exit)
 
@@ -110,8 +111,10 @@ class Gui(JFrame):
         self.pack()
         self.setVisible(True)
         
-    #def getAnnotation(self):
-    #    return 
+    def nextPicture(self, event):
+        self.pP.nextPicture()
+        percent = (float(len(self.pP.usedList))/len(self.pP.pictureList))*100
+        self.progressBar.setValue(int(percent))
     
     def exit(self, event):
         self.pP.exit()

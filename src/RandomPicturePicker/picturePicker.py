@@ -23,7 +23,7 @@ class picturePicker(object):
         '''
         self.inputPathDict = None
         self.outputPath = None
-        self.annotationType = None
+        self.annotationType = ["Yes", "No", "Ignore"]
         self.pictureList = []
         self.usedList = []
         self.currentImp = None
@@ -39,7 +39,6 @@ class picturePicker(object):
         self.outputPath = outputPath
     
     def setAnnotationType(self, annotationType):
-        print "set anno type to", annotationType
         self.annotationType = annotationType
         
     def getAnnotationType(self):
@@ -61,15 +60,24 @@ class picturePicker(object):
             #This statement ONLY after successful annotation!
             #self.pictureList.remove(pic)
     
-    def nextPicture(self, event):
+    def nextPicture(self):
+
         if self.currentImp != None:
+            # TODO: check for annotation
+            
+            self.usedList.append(self.rImage)
             self.currentImp.close()
         
-        if len(self.pictureList) > 0:
-            rImage = random.choice(self.pictureList)
-            print rImage.getImagePath()
-            self.currentImp = rImage.getImp()
+        # update pictureList
+        freshList = [i for i in self.pictureList if i not in self.usedList]
+        print freshList
+        
+        if len(freshList) > 0:
+            self.rImage = random.choice(freshList)
+            print self.rImage.getImagePath()
+            self.currentImp = self.rImage.getImp()
             self.currentImp.show()
+        
             
     def prevPicture(self, event):
         print "previous pic"

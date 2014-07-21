@@ -58,15 +58,15 @@ class initDialog(JDialog): # JFrame
         exPathLabel = JLabel("Save Results in:")
         
         #textfields
-        self.cPathField = JTextField("", 16)
-        self.tPathField = JTextField("", 16)
-        self.exPathField = JTextField("", 16)
+        self.cPathField = JTextField("/Users/schiklen/DotData/131118_dummy/131118_2926/cutout/", 16)
+        self.tPathField = JTextField("/Users/schiklen/DotData/131118_dummy/131118_2926/cutout/", 16)
+        self.exPathField = JTextField("/Users/schiklen/DotData/131118_dummy/131118_2926/cutout/", 16)
         
         #Radiobuttons
-        yesNoRButton = JRadioButton("Yes / No / Ignore", actionCommand="yesNoIgnore", actionPerformed=self.disableCLButton)
-        intRButton = JRadioButton("Integer", actionCommand="int", actionPerformed=self.disableCLButton)
-        nRButton = JRadioButton("Number", actionCommand="number", actionPerformed=self.disableCLButton)
-        listRButton = JRadioButton("From List...", actionCommand="list", actionPerformed=self.enableCLButton)
+        yesNoRButton = JRadioButton("Yes / No / Ignore", selected=True, actionCommand="yesNoIgnore", actionPerformed=self.setAnnotationTypeDialog)
+        intRButton = JRadioButton("Integer", actionCommand="int", actionPerformed=self.setAnnotationTypeDialog)
+        nRButton = JRadioButton("Number", actionCommand="float", actionPerformed=self.setAnnotationTypeDialog)
+        listRButton = JRadioButton("From List...", actionCommand="list", actionPerformed=self.openListDialog)
 
         self.rBGroup = ButtonGroup()
         self.rBGroup.add(yesNoRButton)
@@ -190,15 +190,19 @@ class initDialog(JDialog): # JFrame
         inputDict = {self.tPathField.getText():"treatment", self.cPathField.getText():"control"} # this is for later extension
         self.picPicker.setInputPathDict(inputDict)
         self.picPicker.setOutputPath(self.exPathField.getText())
+        
         self.dispose()
         
     def getPicPicker(self):
         return self.picPicker
 
-    def disableCLButton(self, event):
-        self.picPicker.setAnnotationType(self.rBGroup.getSelection().getActionCommand())
-        #self.customListButton.setEnabled(False)
+    def setAnnotationTypeDialog(self):
+        annotype = self.rBGroup.getSelection().getactionCommand()
+        if annotype == "int" or "float":
+            self.picPicker.setAnnotationType("int")
+        if annotype == "yesNoIgnore":
+            self.picPicker.setAnnotationType(["Yes", "No", "Ignore"])
     
-    def enableCLButton(self,event):
+    def openListDialog(self,event):
         self.makeCustomList()
         #self.customListButton.setEnabled(True)
