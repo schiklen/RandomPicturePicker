@@ -20,6 +20,7 @@ class Gui(JFrame):
         Constructor
         '''
         self.pP = pP
+        self.annotation = None
         
         self.setTitle("Random Picture Picker")
 
@@ -48,7 +49,7 @@ class Gui(JFrame):
             choiceBtns = []
             self.annoField = ButtonGroup()
             for c in choices:
-                Btn = JRadioButton(c, actionCommand=c)
+                Btn = JRadioButton(c, actionCommand=c, actionPerformed=self.setAnnotation)
                 self.annoField.add(Btn)
                 choiceBtns.append(Btn)
           
@@ -115,10 +116,18 @@ class Gui(JFrame):
         self.pP.nextPicture()
         percent = (float(len(self.pP.usedList))/len(self.pP.pictureList))*100
         self.progressBar.setValue(int(percent))
+        
+    def setAnnotation(self, event):
+        print "annofieldtype", type(self.annoField)
+        if self.pP.getAnnotationType() == "list":
+            print "list recognized"
+        if self.pP.getAnnotationType() == "int" or "float":
+            print "textfield reco"
+        
+    def getAnnotation(self):
+        return self.annotation
     
     def exit(self, event):
         self.pP.exit()
         self.dispose()
 
-# Main for test purposes
-#

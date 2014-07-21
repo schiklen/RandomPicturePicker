@@ -27,6 +27,7 @@ class picturePicker(object):
         self.pictureList = []
         self.usedList = []
         self.currentImp = None
+        self.currentPicture = None
 
     # Methods for communication between initDialog and picturePicker
     def showInitDialog(self):
@@ -61,26 +62,29 @@ class picturePicker(object):
             #self.pictureList.remove(pic)
     
     def nextPicture(self):
-
-        if self.currentImp != None:
+        if self.currentPicture != None: # if its not the first picture to open.
             # TODO: check for annotation
-            
-            self.usedList.append(self.rImage)
+            # if self.currentPicture.getAnnotation != None:
+            self.usedList.append(self.currentPicture)
             self.currentImp.close()
         
         # update pictureList
-        freshList = [i for i in self.pictureList if i not in self.usedList]
-        print freshList
-        
-        if len(freshList) > 0:
-            self.rImage = random.choice(freshList)
-            print self.rImage.getImagePath()
-            self.currentImp = self.rImage.getImp()
+        freshList = [i for i in self.pictureList if i not in self.usedList]        
+        if len(freshList) > 0: # if self.currentPicture not in self.usedList
+            self.currentPicture = random.choice(freshList)
+            self.currentImp = self.currentPicture.getImp()
             self.currentImp.show()
-        
-            
+
     def prevPicture(self, event):
-        print "previous pic"
+        if len(self.usedList) >= 1:
+            self.currentImp.close()
+            if self.currentPicture not in self.usedList:
+                i = len(self.usedList)
+            else:
+                i = self.usedList.index(self.currentPicture)
+            self.currentPicture = self.usedList[i-1]
+            self.currentImp = self.currentPicture.getImp()
+            self.currentImp.show()
             
     def exit(self):
         exit(0)
