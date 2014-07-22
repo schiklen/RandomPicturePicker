@@ -51,7 +51,6 @@ class picturePicker(object):
             for fileName in listdir(folder):
                 if path.splitext(fileName)[1] in IMAGE_FORMATS:
                     self.pictureList.append(picture(folder, fileName, self.inputPathDict[folder]))
-        print self.pictureList
     
     def startGUI(self):
         # startGUI
@@ -86,6 +85,9 @@ class picturePicker(object):
             self.currentImp = self.currentPicture.getImp()
             self.currentImp.show()
             
+    def getCurrentPicture(self):
+        return self.currentPicture    
+    
     def exit(self):
         exit(0)
 

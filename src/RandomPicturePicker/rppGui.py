@@ -20,7 +20,7 @@ class Gui(JFrame):
         Constructor
         '''
         self.pP = pP
-        self.annotation = None
+        self.annotationType = self.pP.getAnnotationType()
         
         self.setTitle("Random Picture Picker")
 
@@ -34,22 +34,17 @@ class Gui(JFrame):
 
         # dynamic creation of annotation panel
         # yesNoIgnore, int, number, list
-        print self.pP.getAnnotationType()
-        if self.pP.getAnnotationType() == "int":
-            self.annoField = JTextField("", 4)
-            annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
-            annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
-        elif self.pP.getAnnotationType() == "float":
+        if len(self.pP.getAnnotationType()) == 1:
             self.annoField = JTextField("", 16)
             annoPLayout.setHorizontalGroup(annoPLayout.createParallelGroup().addComponent(self.annoField))
             annoPLayout.setVerticalGroup(annoPLayout.createSequentialGroup().addComponent(self.annoField))
-        elif self.pP.getAnnotationType() == "yesNoIgnore" or "list":
+        elif len(self.pP.getAnnotationType()) > 1:
             choices = pP.getAnnotationType()
             print "choices", choices
             choiceBtns = []
             self.annoField = ButtonGroup()
             for c in choices:
-                Btn = JRadioButton(c, actionCommand=c, actionPerformed=self.setAnnotation)
+                Btn = JRadioButton(c, actionCommand=c)
                 self.annoField.add(Btn)
                 choiceBtns.append(Btn)
           
@@ -112,17 +107,26 @@ class Gui(JFrame):
         self.pack()
         self.setVisible(True)
         
-    def nextPicture(self, event):
         self.pP.nextPicture()
+        
+    def nextPicture(self, event):
         percent = (float(len(self.pP.usedList))/len(self.pP.pictureList))*100
         self.progressBar.setValue(int(percent))
+        try:
+            self.setAnnotation()
+            self.pP.nextPicture()
+        except AttributeError:
+           print "chose something!"
         
-    def setAnnotation(self, event):
-        print "annofieldtype", type(self.annoField)
-        if self.pP.getAnnotationType() == "list":
-            print "list recognized"
-        if self.pP.getAnnotationType() == "int" or "float":
-            print "textfield reco"
+    def setAnnotation(self):
+        if len(self.pP.getAnnotationType()) > 1:
+            annotation = self.annoField.getSelection().getActionCommand()
+        if len(self.pP.getAnnotationType()) == 1:
+            annotation = self.annoField.getText()
+            self.annoField.setText(None)
+        #annotate
+        print annotation
+        self.pP.getCurrentPicture().annotate(annotation)
         
     def getAnnotation(self):
         return self.annotation

@@ -17,8 +17,8 @@ class initDialog(JDialog): # JFrame
         self.tPath = ""
         self.cPath = ""
         self.exPath = ""
-        self.annotate = []
         self.picPicker = pP
+        self.annotationType = self.picPicker.getAnnotationType()
     
         super(initDialog, self).__init__()
         
@@ -196,10 +196,10 @@ class initDialog(JDialog): # JFrame
     def getPicPicker(self):
         return self.picPicker
 
-    def setAnnotationTypeDialog(self):
-        annotype = self.rBGroup.getSelection().getactionCommand()
+    def setAnnotationTypeDialog(self, event):
+        annotype = self.rBGroup.getSelection().getActionCommand()
         if annotype == "int" or "float":
-            self.picPicker.setAnnotationType("int")
+            self.picPicker.setAnnotationType(["text"])
         if annotype == "yesNoIgnore":
             self.picPicker.setAnnotationType(["Yes", "No", "Ignore"])
     
