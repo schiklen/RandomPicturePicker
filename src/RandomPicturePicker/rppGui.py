@@ -117,8 +117,15 @@ class Gui(JFrame):
             self.setAnnotation()
             self.pP.nextPicture()
         except AttributeError:
-            print "chose something!"
+            print "Please choose something!"
+     
+    def setAnnotationField(self, a):
+        if len(self.pP.getAnnotationType()) > 1:
+            [Rbutton.setSelected(True) for Rbutton in self.annoField.getElements() if Rbutton.getActionCommand()==a]
+        if len(self.pP.getAnnotationType()) == 1:
+            self.annoField.setText(a)
         
+    #rename this method to something clearer!    
     def setAnnotation(self):
         if len(self.pP.getAnnotationType()) > 1:
             annotation = self.annoField.getSelection().getActionCommand()

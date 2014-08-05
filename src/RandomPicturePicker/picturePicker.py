@@ -55,9 +55,16 @@ class picturePicker(object):
     def startGUI(self):
         self.gui = Gui(self)
     
+    def loadPicture(self, picture):
+        # try to close old imp here.
+        self.currentPicture = picture
+        self.currentImp = self.currentPicture.getImp()
+        self.currentImp.show()
+        if self.currentPicture.getAnnotation() != None:
+            self.gui.setAnnotationField(picture.getAnnotation())
             
     def nextPicture(self):
-        freshList = [i for i in self.pictureList if i not in self.usedList]        
+        freshList = [i for i in self.pictureList if i not in self.usedList]
         
         if self.currentPicture in self.usedList:
             self.currentImp.close() # close the old picture
@@ -65,29 +72,18 @@ class picturePicker(object):
             if self.usedList.index(self.currentPicture) == len(self.usedList)-1: # if its the last picture in usedlist
                 #print "Last pic in usedlist"
                 if len(freshList) > 0: # if its not the last picture overall
-                    self.currentPicture = random.choice(freshList)
-                    self.currentImp = self.currentPicture.getImp()
-                    self.currentImp.show()
+                    self.loadPicture(random.choice(freshList))
             else:
                 #print "going one fw in list"
-                self.currentPicture = self.usedList[self.usedList.index(self.currentPicture)+1]
-                self.currentImp = self.currentPicture.getImp()
-                self.currentImp.show()
+                self.loadPicture(self.usedList[self.usedList.index(self.currentPicture)+1])
                 
         elif self.currentPicture == None: # if its the first picture
             if len(freshList) > 0: # if its not the last picture
-                self.currentPicture = random.choice(freshList)
-                self.currentImp = self.currentPicture.getImp()
-                self.currentImp.show()
-        
+                self.loadPicture(random.choice(freshList))
         if self.currentPicture not in self.usedList:
-            self.usedList.append(self.currentPicture)
-        print self.currentPicture
-        print self.usedList
-            
+            self.usedList.append(self.currentPicture)        
 
     def prevPicture(self, event):
-        
         if len(self.usedList) >= 1:
             self.currentImp.close()
             #if self.currentPicture not in self.usedList:
@@ -95,11 +91,9 @@ class picturePicker(object):
             #else:
             #    i = self.usedList.index(self.currentPicture)
             i = self.usedList.index(self.currentPicture)
-            self.currentPicture = self.usedList[i-1]
-            self.currentImp = self.currentPicture.getImp()
-            self.currentImp.show()
-        print self.currentPicture
-        print self.usedList
+            if i > 0:
+                self.loadPicture(self.usedList[i-1])
+
             
     def getCurrentPicture(self):
         return self.currentPicture    

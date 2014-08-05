@@ -32,4 +32,7 @@ class picture(object):
     def annotate(self, annotation):
         self.annotation = annotation
     
+    def getAnnotation(self):
+        return self.annotation
+    
     
