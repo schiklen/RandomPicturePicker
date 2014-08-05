@@ -112,11 +112,12 @@ class Gui(JFrame):
     def nextPicture(self, event):
         percent = (float(len(self.pP.usedList))/len(self.pP.pictureList))*100
         self.progressBar.setValue(int(percent))
+
         try:
             self.setAnnotation()
             self.pP.nextPicture()
         except AttributeError:
-           print "chose something!"
+            print "chose something!"
         
     def setAnnotation(self):
         if len(self.pP.getAnnotationType()) > 1:
@@ -124,8 +125,6 @@ class Gui(JFrame):
         if len(self.pP.getAnnotationType()) == 1:
             annotation = self.annoField.getText()
             self.annoField.setText(None)
-        #annotate
-        print annotation
         self.pP.getCurrentPicture().annotate(annotation)
         
     def getAnnotation(self):

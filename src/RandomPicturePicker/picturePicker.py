@@ -53,37 +53,53 @@ class picturePicker(object):
                     self.pictureList.append(picture(folder, fileName, self.inputPathDict[folder]))
     
     def startGUI(self):
-        # startGUI
-        gFr = Gui(self)
-        #self.createPictureList()
-            
-            #This statement ONLY after successful annotation!
-            #self.pictureList.remove(pic)
+        self.gui = Gui(self)
     
+            
     def nextPicture(self):
-        if self.currentPicture != None: # if its not the first picture to open.
-            # TODO: check for annotation
-            # if self.currentPicture.getAnnotation != None:
-            self.usedList.append(self.currentPicture)
-            self.currentImp.close()
-        
-        # update pictureList
         freshList = [i for i in self.pictureList if i not in self.usedList]        
-        if len(freshList) > 0: # if self.currentPicture not in self.usedList
-            self.currentPicture = random.choice(freshList)
-            self.currentImp = self.currentPicture.getImp()
-            self.currentImp.show()
+        
+        if self.currentPicture in self.usedList:
+            self.currentImp.close() # close the old picture
+            
+            if self.usedList.index(self.currentPicture) == len(self.usedList)-1: # if its the last picture in usedlist
+                #print "Last pic in usedlist"
+                if len(freshList) > 0: # if its not the last picture overall
+                    self.currentPicture = random.choice(freshList)
+                    self.currentImp = self.currentPicture.getImp()
+                    self.currentImp.show()
+            else:
+                #print "going one fw in list"
+                self.currentPicture = self.usedList[self.usedList.index(self.currentPicture)+1]
+                self.currentImp = self.currentPicture.getImp()
+                self.currentImp.show()
+                
+        elif self.currentPicture == None: # if its the first picture
+            if len(freshList) > 0: # if its not the last picture
+                self.currentPicture = random.choice(freshList)
+                self.currentImp = self.currentPicture.getImp()
+                self.currentImp.show()
+        
+        if self.currentPicture not in self.usedList:
+            self.usedList.append(self.currentPicture)
+        print self.currentPicture
+        print self.usedList
+            
 
     def prevPicture(self, event):
+        
         if len(self.usedList) >= 1:
             self.currentImp.close()
-            if self.currentPicture not in self.usedList:
-                i = len(self.usedList)
-            else:
-                i = self.usedList.index(self.currentPicture)
+            #if self.currentPicture not in self.usedList:
+            #    i = len(self.usedList)
+            #else:
+            #    i = self.usedList.index(self.currentPicture)
+            i = self.usedList.index(self.currentPicture)
             self.currentPicture = self.usedList[i-1]
             self.currentImp = self.currentPicture.getImp()
             self.currentImp.show()
+        print self.currentPicture
+        print self.usedList
             
     def getCurrentPicture(self):
         return self.currentPicture    
