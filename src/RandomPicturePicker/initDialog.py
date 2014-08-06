@@ -1,4 +1,5 @@
 '''
+Random Picture Picker module
 Created on Jun 3, 2014
 
 @author: schiklen

@@ -1,8 +1,11 @@
 '''
+Random Picture Picker module
 Created on Jun 9, 2014
 
 @author: schiklen
 '''
+
+
 from initDialog import initDialog
 from os import listdir, path, mkdir
 import random
@@ -18,9 +21,7 @@ class picturePicker(object):
     '''
 
     def __init__(self):
-        '''
-        Constructor
-        '''
+        '''Constructor'''
         self.inputPathDict = None
         self.outputPath = None
         self.annotationType = ["Yes", "No", "Ignore"]
