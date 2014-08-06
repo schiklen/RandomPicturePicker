@@ -113,11 +113,14 @@ class Gui(JFrame):
         percent = (float(len(self.pP.usedList))/len(self.pP.pictureList))*100
         self.progressBar.setValue(int(percent))
 
-        try:
-            self.setAnnotation()
-            self.pP.nextPicture()
-        except AttributeError:
-            print "Please choose something!"
+        self.setAnnotation()
+        self.pP.nextPicture()
+
+        #try:
+        #    self.setAnnotation()
+        #    self.pP.nextPicture()
+        #except AttributeError:
+        #    print "Please choose something!"
      
     def setAnnotationField(self, a):
         if len(self.pP.getAnnotationType()) > 1:

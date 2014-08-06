@@ -4,7 +4,7 @@ Created on Jun 9, 2014
 @author: schiklen
 '''
 from initDialog import initDialog
-from os import listdir, path
+from os import listdir, path, mkdir
 import random
 from picture import picture
 from rppGui import Gui
@@ -65,6 +65,7 @@ class picturePicker(object):
             
     def nextPicture(self):
         freshList = [i for i in self.pictureList if i not in self.usedList]
+        self.saveList()
         
         if self.currentPicture in self.usedList:
             self.currentImp.close() # close the old picture
@@ -84,19 +85,27 @@ class picturePicker(object):
             self.usedList.append(self.currentPicture)        
 
     def prevPicture(self, event):
+        self.saveList()
         if len(self.usedList) >= 1:
             self.currentImp.close()
-            #if self.currentPicture not in self.usedList:
-            #    i = len(self.usedList)
-            #else:
-            #    i = self.usedList.index(self.currentPicture)
             i = self.usedList.index(self.currentPicture)
             if i > 0:
                 self.loadPicture(self.usedList[i-1])
-
+                
+    def saveList(self):
+        if self.outputPath != None:
+            try:
+                mkdir(self.outputPath)
+            except OSError:
+                pass
+        f = open(path.join(self.outputPath, "results.csv"), "w")
+        for p in self.usedList:
+            line =  str(p.fileName) + "," + str(p.group) + "," + str(p.getAnnotation()) + "\n"
+            f.write(line)
+        f.close()
             
     def getCurrentPicture(self):
-        return self.currentPicture    
+        return self.currentPicture
     
     def exit(self):
         exit(0)
